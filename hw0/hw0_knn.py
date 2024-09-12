@@ -65,6 +65,16 @@ def calc_k_nearest_neighbors(data_NF, query_QF, K=1):
         If two vectors are equally close, then we break ties by taking the one
         appearing first in row order in the original data_NF array
     '''
-
-    # TODO fixme
-    return None
+    
+    neighb_QKF = []
+    for q_index, q in enumerate(query_QF):
+        neighb_KF = []
+        neighb_QKF.append([])
+        for n_index, n in enumerate(data_NF):
+            distance = np.sqrt(np.sum((q - n) ** 2))
+            neighb_KF.append([distance, n_index])
+        neighb_KF.sort(key=lambda x: (x[0],x[1]))
+        for i in range(K):
+            neighb_QKF[q_index].append(data_NF[neighb_KF[i][1]])
+            
+    return np.asarray(neighb_QKF)
